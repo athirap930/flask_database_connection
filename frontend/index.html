@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask CRUD App</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Flask CRUD App (Dockerized)</h1>
+        <p>Running with PostgreSQL database in Docker containers</p>
+        
+        <div class="api-info">
+            <strong>🏗️ Architecture:</strong><br>
+            Frontend: http://localhost:3000 (Docker Container)<br>
+            Backend: http://localhost:5000 (Docker Container)<br>
+            Database: PostgreSQL (Docker Container)<br>
+            CORS: Enabled between containers
+        </div>
+
+        <div class="section">
+            <h3>👋 Get Message from API</h3>
+            <button onclick="getHii()">Get Hii from Backend</button>
+            <div id="hii"></div>
+        </div>
+
+        <div class="section">
+            <h3>➕ Add New Item to PostgreSQL</h3>
+            <input id="name" placeholder="Item name" required>
+            <input id="desc" placeholder="Item description">
+            <button onclick="addItem()">Add Item via API</button>
+        </div>
+
+        <div class="section">
+            <h3>📋 Items from PostgreSQL Database</h3>
+            <button onclick="toggleItems()" id="toggle-items-btn">Show Items</button>
+            <div id="items-container" style="display: none;">
+                <button onclick="loadItems()" class="refresh-btn">Refresh Items</button>
+                <div id="items"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

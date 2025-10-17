@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  database:
+    image: postgres:13
+    container_name: flask_postgres
+    environment:
+      POSTGRES_DB: flaskapp
+      POSTGRES_USER: flaskuser
+      POSTGRES_PASSWORD: flaskpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flaskuser -d flaskapp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build: ./backend
+    container_name: flask_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://flaskuser:flaskpass@database:5432/flaskapp
+      - FLASK_ENV=production
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend
+  frontend:
+    build: ./frontend
+    container_name: flask_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
