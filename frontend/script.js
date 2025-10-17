@@ -121,7 +121,7 @@ function renderEditForm(item) {
     `;
 }
 
-// Start editing
+
 function startEdit(id) {
     editingItemId = id;
     loadItems();
